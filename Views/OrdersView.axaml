@@ -1,0 +1,151 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Restaurant.ViewModels"
+             x:Class="Restaurant.Views.OrdersView"
+             x:DataType="vm:OrdersViewModel">
+
+    <Grid ColumnDefinitions="320,*">
+
+        <!-- Left Panel: Orders List + Create -->
+        <Border Grid.Column="0" Margin="0,0,8,0" Padding="12"
+                BorderBrush="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                BorderThickness="1" CornerRadius="8">
+            <Grid RowDefinitions="Auto,Auto,*,Auto">
+
+                <TextBlock Grid.Row="0" Text="Заказы" FontSize="18" FontWeight="Bold" Margin="0,0,0,8"/>
+
+                <CheckBox Grid.Row="1" Content="Только активные" IsChecked="{Binding ShowOnlyActive}"
+                          Margin="0,0,0,8"/>
+
+                <ListBox Grid.Row="2" ItemsSource="{Binding FilteredOrders}"
+                         SelectedItem="{Binding SelectedOrder}"
+                         Margin="0,0,0,8">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="4">
+                                <TextBlock Text="{Binding DisplayTitle}" FontWeight="SemiBold"/>
+                                <TextBlock Text="{Binding DisplayInfo}" FontSize="12" Opacity="0.7"/>
+                                <TextBlock FontSize="12" Foreground="#4CAF50"
+                                           Text="{Binding Total, StringFormat='Сумма: {0:N0} сум'}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <!-- Create Order -->
+                <Border Grid.Row="3" Padding="8"
+                        Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                        CornerRadius="6">
+                    <StackPanel Spacing="6">
+                        <TextBlock Text="Новый заказ" FontWeight="SemiBold"/>
+                        <TextBox PlaceholderText="Номер стола" Text="{Binding TableNumber}"/>
+                        <TextBox PlaceholderText="Имя официанта" Text="{Binding WaiterName}"/>
+                        <Button Content="Создать заказ" Command="{Binding CreateOrderCommand}"
+                                HorizontalAlignment="Stretch" Classes="accent"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Right Panel: Order Details -->
+        <Border Grid.Column="1" Padding="12"
+                BorderBrush="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                BorderThickness="1" CornerRadius="8">
+            <Grid RowDefinitions="Auto,*,Auto,Auto">
+
+                <!-- Order Header -->
+                <StackPanel Grid.Row="0" Margin="0,0,0,12"
+                            IsVisible="{Binding SelectedOrder, Converter={x:Static ObjectConverters.IsNotNull}}">
+                    <TextBlock FontSize="20" FontWeight="Bold"
+                               Text="{Binding SelectedOrder.DisplayTitle}"/>
+                    <TextBlock Opacity="0.7"
+                               Text="{Binding SelectedOrder.DisplayInfo}"/>
+                </StackPanel>
+
+                <!-- No Order Selected -->
+                <TextBlock Grid.Row="0" Text="Выберите заказ из списка слева"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                           Opacity="0.5" FontSize="16"
+                           IsVisible="{Binding SelectedOrder, Converter={x:Static ObjectConverters.IsNull}}"/>
+
+                <!-- Order Items -->
+                <DataGrid Grid.Row="1" ItemsSource="{Binding SelectedOrder.Items}"
+                          SelectedItem="{Binding SelectedOrderItem}"
+                          AutoGenerateColumns="False" IsReadOnly="True"
+                          GridLinesVisibility="Horizontal"
+                          IsVisible="{Binding SelectedOrder, Converter={x:Static ObjectConverters.IsNotNull}}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Блюдо" Binding="{Binding MenuItem.Name}" Width="*"/>
+                        <DataGridTextColumn Header="Цена" Binding="{Binding MenuItem.Price, StringFormat='{}{0:N0}'}" Width="100"/>
+                        <DataGridTextColumn Header="Кол-во" Binding="{Binding Quantity}" Width="70"/>
+                        <DataGridTextColumn Header="Сумма" Binding="{Binding Subtotal, StringFormat='{}{0:N0}'}" Width="100"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- Add Item to Order -->
+                <Border Grid.Row="2" Margin="0,12,0,0" Padding="10"
+                        Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                        CornerRadius="6"
+                        IsVisible="{Binding SelectedOrder, Converter={x:Static ObjectConverters.IsNotNull}}">
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Добавить блюдо" FontWeight="SemiBold"/>
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <ComboBox ItemsSource="{Binding AvailableMenu}"
+                                      SelectedItem="{Binding SelectedMenuItem}"
+                                      Width="250" PlaceholderText="Выберите блюдо">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <NumericUpDown Value="{Binding AddQuantity}" Minimum="1" Maximum="50"
+                                           Width="100" FormatString="0"/>
+                            <Button Content="Добавить" Command="{Binding AddItemToOrderCommand}" Classes="accent"/>
+                            <Button Content="Удалить блюдо" Command="{Binding RemoveItemFromOrderCommand}"
+                                    Foreground="White" Background="#E53935"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Order Actions -->
+                <StackPanel Grid.Row="3" Orientation="Horizontal" Spacing="8" Margin="0,12,0,0"
+                            IsVisible="{Binding SelectedOrder, Converter={x:Static ObjectConverters.IsNotNull}}">
+                    <TextBlock Text="Сумма:" FontWeight="Bold" FontSize="18" VerticalAlignment="Center"/>
+                    <TextBlock FontSize="18" VerticalAlignment="Center" Foreground="#4CAF50" Margin="0,0,20,0"
+                               Text="{Binding SelectedOrder.Total, StringFormat='{}{0:N0} сум'}"/>
+
+                    <Button Content="Готовится" Command="{Binding SetCookingCommand}"
+                            Background="#FF9800" Foreground="White"/>
+                    <Button Content="Готов" Command="{Binding SetReadyCommand}"
+                            Background="#2196F3" Foreground="White"/>
+                    <Button Content="Оплатить" Command="{Binding PayOrderCommand}"
+                            Background="#4CAF50" Foreground="White"/>
+                    <Button Content="Отменить" Command="{Binding CancelOrderCommand}"
+                            Background="#E53935" Foreground="White"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Receipt Overlay -->
+        <Border Grid.Column="0" Grid.ColumnSpan="2"
+                IsVisible="{Binding ShowReceipt}"
+                Background="#80000000" CornerRadius="8">
+            <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                    CornerRadius="12" Padding="24"
+                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                    MinWidth="400" MaxWidth="500">
+                <StackPanel Spacing="16">
+                    <TextBlock Text="Чек" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                            CornerRadius="6" Padding="16">
+                        <TextBlock Text="{Binding ReceiptText}" FontFamily="Consolas,Courier New,monospace"
+                                   FontSize="13"/>
+                    </Border>
+                    <Button Content="Закрыть" Command="{Binding CloseReceiptCommand}"
+                            HorizontalAlignment="Center" Classes="accent" MinWidth="120"/>
+                </StackPanel>
+            </Border>
+        </Border>
+    </Grid>
+</UserControl>

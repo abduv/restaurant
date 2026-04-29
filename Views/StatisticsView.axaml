@@ -1,0 +1,85 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Restaurant.ViewModels"
+             x:Class="Restaurant.Views.StatisticsView"
+             x:DataType="vm:StatisticsViewModel">
+
+    <StackPanel Spacing="16" MaxWidth="600" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+        <TextBlock Text="Статистика ресторана" FontSize="24" FontWeight="Bold"
+                   HorizontalAlignment="Center" Margin="0,0,0,8"/>
+
+        <!-- Stats Cards -->
+        <UniformGrid Columns="2" Rows="2" Margin="0,0,0,8">
+            <!-- Total Orders -->
+            <Border Margin="6" Padding="20" CornerRadius="12"
+                    Background="#1A2196F3">
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="Всего заказов" FontSize="14" Opacity="0.7" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding TotalOrders}" FontSize="36" FontWeight="Bold"
+                               Foreground="#2196F3" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Active Orders -->
+            <Border Margin="6" Padding="20" CornerRadius="12"
+                    Background="#1AFF9800">
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="Активных" FontSize="14" Opacity="0.7" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding ActiveOrders}" FontSize="36" FontWeight="Bold"
+                               Foreground="#FF9800" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Paid Orders -->
+            <Border Margin="6" Padding="20" CornerRadius="12"
+                    Background="#1A4CAF50">
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="Оплачено" FontSize="14" Opacity="0.7" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding PaidOrders}" FontSize="36" FontWeight="Bold"
+                               Foreground="#4CAF50" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Cancelled Orders -->
+            <Border Margin="6" Padding="20" CornerRadius="12"
+                    Background="#1AE53935">
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="Отменено" FontSize="14" Opacity="0.7" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding CancelledOrders}" FontSize="36" FontWeight="Bold"
+                               Foreground="#E53935" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+        </UniformGrid>
+
+        <!-- Revenue -->
+        <Border Padding="24" CornerRadius="12" Background="#1A4CAF50">
+            <StackPanel HorizontalAlignment="Center">
+                <TextBlock Text="Общая выручка" FontSize="16" Opacity="0.7" HorizontalAlignment="Center"/>
+                <TextBlock FontSize="40" FontWeight="Bold" Foreground="#4CAF50" HorizontalAlignment="Center"
+                           Text="{Binding TotalRevenue, StringFormat='{}{0:N0} сум'}"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Average Check -->
+        <Border Padding="16" CornerRadius="12" Background="#1A9C27B0">
+            <StackPanel HorizontalAlignment="Center">
+                <TextBlock Text="Средний чек" FontSize="14" Opacity="0.7" HorizontalAlignment="Center"/>
+                <TextBlock FontSize="28" FontWeight="Bold" Foreground="#9C27B0" HorizontalAlignment="Center"
+                           Text="{Binding AverageCheck, StringFormat='{}{0:N0} сум'}"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Top Dish -->
+        <Border Padding="16" CornerRadius="12" Background="#1AFF5722">
+            <StackPanel HorizontalAlignment="Center">
+                <TextBlock Text="Самое популярное блюдо" FontSize="14" Opacity="0.7" HorizontalAlignment="Center"/>
+                <TextBlock Text="{Binding TopDish}" FontSize="22" FontWeight="Bold"
+                           Foreground="#FF5722" HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
+        <Button Content="Обновить" Command="{Binding RefreshCommand}"
+                HorizontalAlignment="Center" Classes="accent" MinWidth="150" Margin="0,8,0,0"/>
+    </StackPanel>
+</UserControl>

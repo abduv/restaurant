@@ -1,0 +1,65 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Restaurant.ViewModels"
+             x:Class="Restaurant.Views.MenuView"
+             x:DataType="vm:MenuViewModel">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- Category Filter Buttons -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="8" Margin="0,0,0,16">
+            <Button Content="Все" Command="{Binding SetFilterCommand}" CommandParameter="Все"
+                    Classes="accent" MinWidth="70"/>
+            <Button Content="Закуски" Command="{Binding SetFilterCommand}" CommandParameter="Закуски" MinWidth="70"/>
+            <Button Content="Салаты" Command="{Binding SetFilterCommand}" CommandParameter="Салаты" MinWidth="70"/>
+            <Button Content="Супы" Command="{Binding SetFilterCommand}" CommandParameter="Супы" MinWidth="70"/>
+            <Button Content="Горячее" Command="{Binding SetFilterCommand}" CommandParameter="Горячее" MinWidth="70"/>
+            <Button Content="Десерты" Command="{Binding SetFilterCommand}" CommandParameter="Десерты" MinWidth="70"/>
+            <Button Content="Напитки" Command="{Binding SetFilterCommand}" CommandParameter="Напитки" MinWidth="70"/>
+        </StackPanel>
+
+        <!-- Menu Items List -->
+        <Border Grid.Row="1" BorderBrush="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+                BorderThickness="1" CornerRadius="8" Padding="4">
+            <DataGrid ItemsSource="{Binding FilteredItems}"
+                      SelectedItem="{Binding SelectedItem}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      GridLinesVisibility="Horizontal"
+                      CanUserResizeColumns="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
+                    <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="*"/>
+                    <DataGridTextColumn Header="Описание" Binding="{Binding Description}" Width="1.5*"/>
+                    <DataGridTextColumn Header="Цена (сум)" Binding="{Binding Price, StringFormat='{}{0:N0}'}" Width="120"/>
+                    <DataGridTextColumn Header="Категория" Binding="{Binding Category}" Width="100"/>
+                    <DataGridCheckBoxColumn Header="Доступно" Binding="{Binding IsAvailable}" Width="80"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+
+        <!-- Bottom Panel: Add / Actions -->
+        <Border Grid.Row="2" Margin="0,16,0,0" Padding="16"
+                Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+                CornerRadius="8">
+            <Grid ColumnDefinitions="*,Auto">
+                <!-- Add New Item Form -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                    <TextBox PlaceholderText="Название" Text="{Binding NewName}" Width="150"/>
+                    <TextBox PlaceholderText="Описание" Text="{Binding NewDescription}" Width="180"/>
+                    <TextBox PlaceholderText="Цена" Text="{Binding NewPrice}" Width="100"/>
+                    <ComboBox ItemsSource="{Binding Categories}" SelectedItem="{Binding NewCategory}"
+                              Width="120" PlaceholderText="Категория"/>
+                    <Button Content="Добавить" Command="{Binding AddItemCommand}" Classes="accent"/>
+                </StackPanel>
+
+                <!-- Item Actions -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+                    <Button Content="Вкл/Выкл" Command="{Binding ToggleAvailabilityCommand}"/>
+                    <Button Content="Удалить" Command="{Binding RemoveItemCommand}"
+                            Foreground="White" Background="#E53935"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

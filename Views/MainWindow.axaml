@@ -1,0 +1,49 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Restaurant.ViewModels"
+        xmlns:local="using:Restaurant"
+        x:Class="Restaurant.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="Ресторан «Восток» — Система управления"
+        Width="1100" Height="750"
+        MinWidth="900" MinHeight="600"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- Top Navigation Bar -->
+        <Border Grid.Row="0" Padding="16,12"
+                Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <!-- Title -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
+                    <TextBlock Text="РЕСТОРАН «ВОСТОК»" FontSize="20" FontWeight="Bold"
+                               Foreground="#FF9800"/>
+                </StackPanel>
+
+                <!-- Navigation Buttons -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="4"
+                            HorizontalAlignment="Center">
+                    <Button Content="Меню" Command="{Binding NavigateToMenuCommand}"
+                            MinWidth="120" FontSize="14"/>
+                    <Button Content="Заказы" Command="{Binding NavigateToOrdersCommand}"
+                            MinWidth="120" FontSize="14"/>
+                    <Button Content="Статистика" Command="{Binding NavigateToStatisticsCommand}"
+                            MinWidth="120" FontSize="14"/>
+                </StackPanel>
+
+                <TextBlock Grid.Column="2" VerticalAlignment="Center" Opacity="0.5" FontSize="12"
+                           Text="Avalonia UI"/>
+            </Grid>
+        </Border>
+
+        <!-- Content Area -->
+        <Border Grid.Row="1" Padding="16">
+            <ContentControl Content="{Binding CurrentView}">
+                <ContentControl.DataTemplates>
+                    <local:ViewLocator/>
+                </ContentControl.DataTemplates>
+            </ContentControl>
+        </Border>
+    </Grid>
+</Window>

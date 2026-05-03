@@ -31,7 +31,7 @@
                     <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
                     <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="*"/>
                     <DataGridTextColumn Header="Описание" Binding="{Binding Description}" Width="1.5*"/>
-                    <DataGridTextColumn Header="Цена (сум)" Binding="{Binding Price, StringFormat='{}{0:N0}'}" Width="120"/>
+                    <DataGridTextColumn Header="Цена (тенге)" Binding="{Binding Price, StringFormat='{}{0:N0}'}" Width="120"/>
                     <DataGridTextColumn Header="Категория" Binding="{Binding Category}" Width="100"/>
                     <DataGridCheckBoxColumn Header="Доступно" Binding="{Binding IsAvailable}" Width="80"/>
                 </DataGrid.Columns>

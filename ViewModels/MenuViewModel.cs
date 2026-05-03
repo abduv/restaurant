@@ -75,6 +75,7 @@ public partial class MenuViewModel : ViewModelBase
     {
         if (SelectedItem == null) return;
         SelectedItem.IsAvailable = !SelectedItem.IsAvailable;
+        _service.SaveMenuItem(SelectedItem);
         ApplyFilter();
     }
 }

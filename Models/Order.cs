@@ -1,5 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -16,27 +18,35 @@ public enum OrderStatus
 
 public partial class Order : ObservableObject
 {
-    private static int _nextId = 1;
+    [Key]
+    public int Id { get; set; }
 
-    public int Id { get; }
-    public int TableNumber { get; }
-    public string WaiterName { get; }
-    public DateTime CreatedAt { get; } = DateTime.Now;
-    public ObservableCollection<OrderItem> Items { get; } = new();
+    public int TableNumber { get; set; }
+    public string WaiterName { get; set; } = "";
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+    public ObservableCollection<OrderItem> Items { get; set; } = new();
 
     [ObservableProperty] private OrderStatus _status = OrderStatus.Новый;
 
+    [NotMapped]
     public decimal Total => Items.Sum(i => i.Subtotal);
 
+    [NotMapped]
     public string DisplayTitle => $"Заказ №{Id} — Стол {TableNumber}";
+
+    [NotMapped]
     public string DisplayInfo => $"{WaiterName} | {CreatedAt:HH:mm} | {Status}";
 
-    public Order(int tableNumber, string waiterName)
+    public Order()
     {
-        Id = _nextId++;
+        Items.CollectionChanged += (_, _) => OnPropertyChanged(nameof(Total));
+    }
+
+    public Order(int tableNumber, string waiterName) : this()
+    {
         TableNumber = tableNumber;
         WaiterName = waiterName;
-        Items.CollectionChanged += (_, _) => OnPropertyChanged(nameof(Total));
     }
 
     public void AddItem(MenuItem menuItem, int quantity)

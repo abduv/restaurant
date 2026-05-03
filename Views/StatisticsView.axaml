@@ -57,7 +57,7 @@
             <StackPanel HorizontalAlignment="Center">
                 <TextBlock Text="Общая выручка" FontSize="16" Opacity="0.7" HorizontalAlignment="Center"/>
                 <TextBlock FontSize="40" FontWeight="Bold" Foreground="#4CAF50" HorizontalAlignment="Center"
-                           Text="{Binding TotalRevenue, StringFormat='{}{0:N0} сум'}"/>
+                           Text="{Binding TotalRevenue, StringFormat='{}{0:N0} тенге'}"/>
             </StackPanel>
         </Border>
 
@@ -66,7 +66,7 @@
             <StackPanel HorizontalAlignment="Center">
                 <TextBlock Text="Средний чек" FontSize="14" Opacity="0.7" HorizontalAlignment="Center"/>
                 <TextBlock FontSize="28" FontWeight="Bold" Foreground="#9C27B0" HorizontalAlignment="Center"
-                           Text="{Binding AverageCheck, StringFormat='{}{0:N0} сум'}"/>
+                           Text="{Binding AverageCheck, StringFormat='{}{0:N0} тенге'}"/>
             </StackPanel>
         </Border>
 

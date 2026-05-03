@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Restaurant.Models;
@@ -14,9 +15,8 @@ public enum Category
 
 public partial class MenuItem : ObservableObject
 {
-    private static int _nextId = 1;
-
-    public int Id { get; }
+    [Key]
+    public int Id { get; set; }
 
     [ObservableProperty] private string _name = "";
     [ObservableProperty] private string _description = "";
@@ -24,9 +24,10 @@ public partial class MenuItem : ObservableObject
     [ObservableProperty] private Category _category;
     [ObservableProperty] private bool _isAvailable = true;
 
+    public MenuItem() { }
+
     public MenuItem(string name, string description, decimal price, Category category)
     {
-        Id = _nextId++;
         _name = name;
         _description = description;
         _price = price;

@@ -26,7 +26,7 @@
                                 <TextBlock Text="{Binding DisplayTitle}" FontWeight="SemiBold"/>
                                 <TextBlock Text="{Binding DisplayInfo}" FontSize="12" Opacity="0.7"/>
                                 <TextBlock FontSize="12" Foreground="#4CAF50"
-                                           Text="{Binding Total, StringFormat='Сумма: {0:N0} сум'}"/>
+                                           Text="{Binding Total, StringFormat='Сумма: {0:N0} тенге'}"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -113,7 +113,7 @@
                             IsVisible="{Binding SelectedOrder, Converter={x:Static ObjectConverters.IsNotNull}}">
                     <TextBlock Text="Сумма:" FontWeight="Bold" FontSize="18" VerticalAlignment="Center"/>
                     <TextBlock FontSize="18" VerticalAlignment="Center" Foreground="#4CAF50" Margin="0,0,20,0"
-                               Text="{Binding SelectedOrder.Total, StringFormat='{}{0:N0} сум'}"/>
+                               Text="{Binding SelectedOrder.Total, StringFormat='{}{0:N0} тенге'}"/>
 
                     <Button Content="Готовится" Command="{Binding SetCookingCommand}"
                             Background="#FF9800" Foreground="White"/>

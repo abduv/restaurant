@@ -4,7 +4,7 @@
         xmlns:local="using:Restaurant"
         x:Class="Restaurant.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Title="Ресторан «Восток» — Система управления"
+        Title="Ресторан — Система управления"
         Width="1100" Height="750"
         MinWidth="900" MinHeight="600"
         WindowStartupLocation="CenterScreen">
@@ -17,7 +17,7 @@
             <Grid ColumnDefinitions="Auto,*,Auto">
                 <!-- Title -->
                 <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="12" VerticalAlignment="Center">
-                    <TextBlock Text="РЕСТОРАН «ВОСТОК»" FontSize="20" FontWeight="Bold"
+                    <TextBlock Text="РЕСТОРАН" FontSize="20" FontWeight="Bold"
                                Foreground="#FF9800"/>
                 </StackPanel>
 

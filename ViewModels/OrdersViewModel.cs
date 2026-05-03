@@ -75,6 +75,7 @@ public partial class OrdersViewModel : ViewModelBase
         if (SelectedOrder.Status == OrderStatus.Оплачен || SelectedOrder.Status == OrderStatus.Отменён) return;
 
         SelectedOrder.AddItem(SelectedMenuItem, AddQuantity);
+        _service.SaveOrder(SelectedOrder);
         AddQuantity = 1;
         OnPropertyChanged(nameof(SelectedOrder));
     }
@@ -84,6 +85,7 @@ public partial class OrdersViewModel : ViewModelBase
     {
         if (SelectedOrder == null || SelectedOrderItem == null) return;
         SelectedOrder.RemoveItem(SelectedOrderItem);
+        _service.SaveOrder(SelectedOrder);
         SelectedOrderItem = null;
         OnPropertyChanged(nameof(SelectedOrder));
     }
@@ -93,6 +95,7 @@ public partial class OrdersViewModel : ViewModelBase
     {
         if (SelectedOrder == null) return;
         SelectedOrder.Status = OrderStatus.Готовится;
+        _service.SaveOrder(SelectedOrder);
         RefreshFilteredOrders();
     }
 
@@ -101,6 +104,7 @@ public partial class OrdersViewModel : ViewModelBase
     {
         if (SelectedOrder == null) return;
         SelectedOrder.Status = OrderStatus.Готов;
+        _service.SaveOrder(SelectedOrder);
         RefreshFilteredOrders();
     }
 
@@ -109,6 +113,7 @@ public partial class OrdersViewModel : ViewModelBase
     {
         if (SelectedOrder == null || SelectedOrder.Items.Count == 0) return;
         SelectedOrder.Status = OrderStatus.Оплачен;
+        _service.SaveOrder(SelectedOrder);
         GenerateReceipt(SelectedOrder);
         RefreshFilteredOrders();
     }
@@ -118,6 +123,7 @@ public partial class OrdersViewModel : ViewModelBase
     {
         if (SelectedOrder == null) return;
         SelectedOrder.Status = OrderStatus.Отменён;
+        _service.SaveOrder(SelectedOrder);
         RefreshFilteredOrders();
     }
 
@@ -139,7 +145,7 @@ public partial class OrdersViewModel : ViewModelBase
         var lines = new System.Collections.Generic.List<string>
         {
             "══════════════════════════════════",
-            "        РЕСТОРАН «ВОСТОК»",
+            "           РЕСТОРАН",
             "══════════════════════════════════",
             $"  Заказ №{order.Id}     Стол №{order.TableNumber}",
             $"  Официант: {order.WaiterName}",
@@ -150,11 +156,11 @@ public partial class OrdersViewModel : ViewModelBase
         foreach (var item in order.Items)
         {
             lines.Add($"  {item.MenuItem.Name}");
-            lines.Add($"    {item.Quantity} x {item.MenuItem.Price:N0} = {item.Subtotal:N0} сум");
+            lines.Add($"    {item.Quantity} x {item.MenuItem.Price:N0} = {item.Subtotal:N0} тенге");
         }
 
         lines.Add("──────────────────────────────────");
-        lines.Add($"  ИТОГО: {order.Total:N0} сум");
+        lines.Add($"  ИТОГО: {order.Total:N0} тенге");
         lines.Add("══════════════════════════════════");
         lines.Add("      Спасибо за визит!");
 
